@@ -1,0 +1,837 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Fun with Frequencies!, Annalise Hurst</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/3-col-portfolio.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Page Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">CS194-26 Project 3: Fun with Frequencies!
+                    <small>Annalise Hurst, Fall 2016</small>
+                </h1>
+
+
+
+                <h2 class="page-header">Introduction</h2>
+                
+
+                <p>Images are made up of many different frequencies. Isolating and manipulating these frequencies can enhance features of an image, create illusions, blend images together, and much more. For this assignment we were tasked to implement many of these techniques and produce interesting images of our own.</p>
+        </div>
+    </div>
+
+        <!-- Page Header -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="page-header">Part 0. Warmup
+                    </h2>
+                    <div class="row">
+                        <div class="col-md-4 portfolio-item">
+                            <a href="img/ssd_cathedral.jpg">
+                                <img class="img-responsive" src="img/cat.jpg" alt="">
+                            </a>
+                        </div>
+                    </div>
+                <p>As a warmup the first technique we were asked to implement was sharpening an image using unsharpening. The technique is called unsharpening because it uses a blurred version of the image to acquire the high frequency edges needed to add back to the original image. First the original image is convolved with a 2d gaussian function, with a sigma value of 40, to get the low frequencies of the image a.k.a. the blurred image. Next the high frequencies are gotten by subtracting the low frequency image from the original image. Finally to sharpen the image a percentage of the high frequency image is added back to the original image.</P>
+                <code>sharpened_img = original_img + percent*(original_img - blurred_img)</code>
+                <p>To sharpen an image of my families’ cat Money Penny, I added back 40% of the high frequency image to the original. Here are the different images I produced throughout the algorithm.</p> 
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Projects Row -->
+        <div class="row">
+            <div class="col-md-3 portfolio-item">
+                <a href="img/ssd_cathedral.jpg">
+                    <img class="img-responsive" src="img/original.jpg" alt="">
+                </a>
+                <figcaption>Original</figcaption>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/ssd_monastery.jpg">
+                    <img class="img-responsive" src="img/blur.jpg" alt="">
+                </a>
+                <figcaption>Image Convolved With Guassian</figcaption>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/ssd_monastery.jpg">
+                    <img class="img-responsive" src="img/high.jpg" alt="">
+                </a>
+                <figcaption>Blurred Image Subtracted From Original</figcaption>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/ssd_monastery.jpg">
+                    <img class="img-responsive" src="img/sharpened.jpg" alt="">
+                </a>
+                <figcaption>Sharpened</figcaption>
+            </div>
+
+        </div>
+    <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">Part 1. Hybrid Images 
+                </h2>
+                <p>A hybrid image is one that can be perceived in two different ways depending on how you view it. Because of how the human eye processes frequencies, low frequencies are observed over high frequencies at larger distances from an object and high frequencies are observed over low frequencies at closer distances from an object. This allows for the illusion of a changing image to be created by combining the low frequencies of one image and the high frequencies of another. For this hybrid image the viewer will see one image while looking at the scene from a distance and a different image while looking at the scene close up.</p>
+                <p>Here are the two images I chose to create a hybrid image with. One is of my cat TJ and the other is of myself.</p>
+            </div>
+        </div>
+
+        <!-- Projects Row -->
+        <div class="row"> 
+            <div class="col-md-3 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/im2.jpg" alt="">
+                </a>
+                <figcaption>First</figcaption>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/im1.jpg" alt="">
+                </a>
+                <figcaption>Second</figcaption>
+            </div>
+        </div>
+        <p>Before creating the separate frequency images, the two images had to be aligned and cropped so that two selected points in each image were aligned with each other and the resulting images were the same size.</p>
+        <p>After aligning the images, I took the low frequencies of one image by convolving the image with a 2d gaussian like in the warmup. Then I took the high frequencies of the other image by subtracting the low frequencies from the original image. Finally I added the two resulting images together to create the hybrid image. For each of the images I chose a cutoff-frequency for the 2d gaussian I convolved them with. This depicted how much of the low and high frequencies the resulting images contained. Here are the resulting images.</p>
+        <div class="row"> 
+            <div class="col-md-4 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/lowf.jpg" alt="">
+                </a>
+                <figcaption>Low Frequency (cutoff-frequency : sigma = 20)</figcaption>
+            </div>
+            <div class="col-md-4 portfolio-item">
+                 <a href="img/ssd_still.jpg">
+                    <img class="img-responsive" src="img/highf.jpg" alt="">
+                </a>
+                <figcaption>High Frequency (cutoff- frequency : sigma = 10)</figcaption>
+            </div>
+            <div class="col-md-4 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/hybrid.jpg" alt="">
+                </a>
+                <figcaption>Hybrid</figcaption>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1 portfolio-item">
+                 <a href="img/ssd_horses.jpg">
+                    <img class="img-responsive" src="img/hybrid.jpg" alt="">
+                </a>
+            </div>
+            <p>Shrinking the hybrid image can capture the same effect as looking at it from a distance.</p>
+        </div>
+        <p>To illustrate the proccess through frequency analysis, here are the log magnitudes of the Fourier transform of the two imput images.</p>
+        <div class="row">
+            <div class="col-md-3 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/ffim2.jpg" alt="">
+                </a>
+                <figcaption>First</figcaption>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/ffim1.jpg" alt="">
+                </a>
+                <figcaption>Second</figcaption>
+            </div>
+        </div>
+        <p>Here are the log magnitudes of the Fourier transform of the low and high frequency images and the hybrid image.</p>
+        <div class="row">
+            <div class="col-md-4 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/fflow.jpg" alt="">
+                </a>
+                <figcaption>Low Frequency (cutoff-frequency : sigma = 20)</figcaption>
+            </div>
+            <div class="col-md-4 portfolio-item">
+                 <a href="img/ssd_still.jpg">
+                    <img class="img-responsive" src="img/ffhigh.jpg" alt="">
+                </a>
+                <figcaption>High Frequency (cutoff- frequency : sigma = 10)</figcaption>
+            </div>
+            <div class="col-md-4 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/ffhybrid.jpg" alt="">
+                </a>
+                <figcaption>Hybrid</figcaption>
+            </div>
+        </div>
+        <p>Here are some other hybrid images that I created.</p>
+        <p></p>
+        <p>Change over time.</p>
+        <p>To make this image successful I had to include more a larger portion of both the higher and lower frequencies to clearly show each of my cat Knots' positions in the hybrid image. Therefore I needed a lower sigma value for the low frequencies which keeps more of the original frequencies, and a higher sigma for the high frequency image to keep more the high frequencies when the convolved image was subtracted from the original image. This is because in the low frequency image Knots would get lost in the grass with a higher sigma value, and in the higher frequency image she wouldn't be clear enough with lower sigma values.</p>
+        <div class="row"> 
+            <div class="col-md-3 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/lowf1.jpg" alt="">
+                </a>
+                <figcaption>Low Frequency (cutoff-frequency : sigma = 10)</figcaption>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                 <a href="img/ssd_still.jpg">
+                    <img class="img-responsive" src="img/highf1.jpg" alt="">
+                </a>
+                <figcaption>High Frequency (cutoff-frequency : sigma = 50)</figcaption>
+            </div>
+            <div class="col-md-4 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/hybrid1.jpg" alt="">
+                </a>
+                <figcaption>Hybrid</figcaption>
+            </div>
+            <div class="col-md-1 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/hybrid1.jpg" alt="">
+                </a>
+                <figcaption>Hybrid</figcaption>
+            </div>
+        </div>
+        <p>Morph betweeen different objects.</p>
+        <p>For this image the low frequency image could have a higher sigma value and still be visible when viewed from a distance in the hybrid image. However the higher frequencies were taking over the hybrid image even at far distances, so the sigma value had to be very small.</p>
+        <div class="row"> 
+            <div class="col-md-3 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/lowf3.jpg" alt="">
+                </a>
+                <figcaption>Low Frequency (cutoff-frequency : sigma = 20) </figcaption>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                 <a href="img/ssd_still.jpg">
+                    <img class="img-responsive" src="img/highf3.jpg" alt="">
+                </a>
+                <figcaption>High Frequency (cutoff-frequency : sigma = 10) </figcaption>
+            </div>
+            <div class="col-md-4 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/hybrid3.jpg" alt="">
+                </a>
+                <figcaption>Hybrid</figcaption>
+            </div>
+            <div class="col-md-1 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/hybrid3.jpg" alt="">
+                </a>
+                <figcaption>Hybrid</figcaption>
+            </div>
+        </div>
+        <p>Change of expression.</p>
+        <p>To keep the distinction of the expression from the low frequency image in the hybrid image, the sigma value had to be kept small. Also, to keep the high frequency image from dominating the lower one in the hybrid image from large distances the sigma value had to be small</p>
+        <div class="row"> 
+            <div class="col-md-3 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/lowf4.jpg" alt="">
+                </a>
+                <figcaption>Low Frequency (cutoff-frequency : sigma = 5)</figcaption>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                 <a href="img/ssd_still.jpg">
+                    <img class="img-responsive" src="img/highf4.jpg" alt="">
+                </a>
+                <figcaption>High Frequency (cutoff-frequency : sigma = 5)</figcaption>
+            </div>
+            <div class="col-md-4 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/hybrid4.jpg" alt="">
+                </a>
+                <figcaption>Hybrid</figcaption>
+            </div>
+            <div class="col-md-1 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/hybrid4.jpg" alt="">
+                </a>
+                <figcaption>Hybrid</figcaption>
+            </div>
+        </div>
+        <p>For this image I was trying to create a change over time image, but the frequency of the carpet was higher than the frequency of my cat. This caused the high frequency cat to not be fully captured in the image and made the hybrid image very blurry up close.</p>
+        <div class="row"> 
+            <div class="col-md-3 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/lowf2.jpg" alt="">
+                </a>
+                <figcaption>Low Frequency (cutoff-frequency : sigma = 50)</figcaption>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                 <a href="img/ssd_still.jpg">
+                    <img class="img-responsive" src="img/highf2.jpg" alt="">
+                </a>
+                <figcaption>High Frequency (cutoff-frequency : sigma = 50)</figcaption>
+            </div>
+            <div class="col-md-4 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/hybrid2.jpg" alt="">
+                </a>
+                <figcaption>Hybrid</figcaption>
+            </div>
+            <div class="col-md-1 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/hybrid2.jpg" alt="">
+                </a>
+                <figcaption>Hybrid</figcaption>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">Part 2. Gaussian and Laplacian Stacks 
+                </h2>
+                <p>Gaussian and Laplacian Stacks can be used to analyze images that contain structure at multiple resolutions, such as the hybrid images created above. A Gaussian stack is a stack of the same image convolved with a 2d gaussian that gets larger at each level. To create a larger gaussian filter, a larger sigma value is used. For each level of the Gaussian stack that I created the sigma value was doubled. To create a Laplacian stack the second level of the gaussian stack is subtracted from the first to make the first level Laplacian and then the third level gaussian is subtracted from the second level to make the second level Laplacian and so on. The lowest level of the Gaussian stack is also the lowest level of the Laplacian stack. I created these stacks for the following images to show the different structures they have a high and low frequencies.</p>
+            </div>
+        </div>
+        <p> </p>
+        <p> </p>
+        <p>Salvador Dali painting of Lincoln and Gala</P>
+        <p>You can see Gala in the high frequencies and Lincoln in the low frequencies.</P>
+        <p> Gaussian Stack </p>
+        <div class="row"> 
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/gstack0-2.jpg" alt="">
+                </a>
+                <figcaption>sigma = 0</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_still.jpg">
+                    <img class="img-responsive" src="img/gstack1-2.jpg" alt="">
+                </a>
+                <figcaption>sigma = 2</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/gstack2-2.jpg" alt="">
+                </a>
+                <figcaption>sigma = 4</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/gstack3-2.jpg" alt="">
+                </a>
+                <figcaption>sigma = 8</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/gstack4-2.jpg" alt="">
+                </a>
+                <figcaption>sigma = 16</figcaption>
+            </div>
+        </div>
+        <p> Laplacian Stack </p>
+        <div class="row"> 
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/lstack0-2.jpg" alt="">
+                </a>
+                <figcaption>sigma = 0 - simga = 2</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_still.jpg">
+                    <img class="img-responsive" src="img/lstack1-2.jpg" alt="">
+                </a>
+                <figcaption>sigma = 2 - simga = 4</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/lstack2-2.jpg" alt="">
+                </a>
+                <figcaption>sigma = 4 - simga = 8</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/lstack3-2.jpg" alt="">
+                </a>
+                <figcaption>sigma = 8 - simga = 16</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/lstack4-2.jpg" alt="">
+                </a>
+                <figcaption>sigma = 16</figcaption>
+            </div>
+        </div>
+        <p> </p>
+        <p> </p>
+        <p>Cat Dog</P>
+        <p>You can see the cat in the high frequencies and dog in the low frequencies.</P>
+        <p> Gaussian Stack </p>
+        <div class="row"> 
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/gstack0-3.jpg" alt="">
+                </a>
+                <figcaption>sigma = 0</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_still.jpg">
+                    <img class="img-responsive" src="img/gstack1-3.jpg" alt="">
+                </a>
+                <figcaption>sigma = 2</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/gstack2-3.jpg" alt="">
+                </a>
+                <figcaption>sigma = 4</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/gstack3-3.jpg" alt="">
+                </a>
+                <figcaption>sigma = 8</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/gstack4-3.jpg" alt="">
+                </a>
+                <figcaption>sigma = 16</figcaption>
+            </div>
+        </div>
+        <p> Laplacian Stack </p>
+        <div class="row"> 
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/lstack0-3.jpg" alt="">
+                </a>
+                <figcaption>sigma = 0 - simga = 2</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_still.jpg">
+                    <img class="img-responsive" src="img/lstack1-3.jpg" alt="">
+                </a>
+                <figcaption>sigma = 2 - simga = 4</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/lstack2-3.jpg" alt="">
+                </a>
+                <figcaption>sigma = 4 - simga = 8</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/lstack3-3.jpg" alt="">
+                </a>
+                <figcaption>sigma = 8 - simga = 16</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/lstack4-3.jpg" alt="">
+                </a>
+                <figcaption>sigma = 16</figcaption>
+            </div>
+        </div>
+        <p> </p>
+        <p> </p>
+        <p>Einstein and Marilyn Monroe</p>
+        <p>You can see Einstein in the high frequencies and Marilyn Monroe in the low frequencies.</P>
+        <p> Gaussian Stack </p>
+        <div class="row"> 
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/gstack0-1.jpg" alt="">
+                </a>
+                <figcaption>sigma = 0</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_still.jpg">
+                    <img class="img-responsive" src="img/gstack1-1.jpg" alt="">
+                </a>
+                <figcaption>sigma = 2</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/gstack2-1.jpg" alt="">
+                </a>
+                <figcaption>sigma = 4</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/gstack3-1.jpg" alt="">
+                </a>
+                <figcaption>sigma = 8</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/gstack4-1.jpg" alt="">
+                </a>
+                <figcaption>sigma = 16</figcaption>
+            </div>
+        </div>
+        <p> Laplacian Stack </p>
+        <div class="row"> 
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/lstack0-1.jpg" alt="">
+                </a>
+                <figcaption>sigma = 0 - simga = 2</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_still.jpg">
+                    <img class="img-responsive" src="img/lstack1-1.jpg" alt="">
+                </a>
+                <figcaption>sigma = 2 - simga = 4</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/lstack2-1.jpg" alt="">
+                </a>
+                <figcaption>sigma = 4 - simga = 8</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/lstack3-1.jpg" alt="">
+                </a>
+                <figcaption>sigma = 8 - simga = 16</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/lstack4-1.jpg" alt="">
+                </a>
+                <figcaption>sigma = 16</figcaption>
+            </div>
+        </div>
+        <p> </p>
+        <p> </p>
+        <p>Here are the Gaussian and Lapalcian stacks for my favorite hybrid image.</p>
+        <p>You can see my cat TJ in the high frequencies and me in the low frequencies.</P>
+        <p> Gaussian Stack </p>
+        <div class="row"> 
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/gstack0.jpg" alt="">
+                </a>
+                <figcaption>sigma = 0</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_still.jpg">
+                    <img class="img-responsive" src="img/gstack1.jpg" alt="">
+                </a>
+                <figcaption>sigma = 2</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/gstack2.jpg" alt="">
+                </a>
+                <figcaption>sigma = 4</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/gstack3.jpg" alt="">
+                </a>
+                <figcaption>sigma = 8</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/gstack4.jpg" alt="">
+                </a>
+                <figcaption>sigma = 16</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/gstack5.jpg" alt="">
+                </a>
+                <figcaption>sigma = 32</figcaption>
+            </div>
+        </div>
+        <p> Laplacian Stack </p>
+        <div class="row"> 
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/lstack0.jpg" alt="">
+                </a>
+                <figcaption>sigma = 0 - simga = 2</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_still.jpg">
+                    <img class="img-responsive" src="img/lstack1.jpg" alt="">
+                </a>
+                <figcaption>sigma = 2 - simga = 4</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/lstack2.jpg" alt="">
+                </a>
+                <figcaption>sigma = 4 - simga = 8</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_girls.jpg">
+                    <img class="img-responsive" src="img/lstack3.jpg" alt="">
+                </a>
+                <figcaption>sigma = 8 - simga = 16</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/lstack4.jpg" alt="">
+                </a> 
+                <figcaption>sigma = 16 - simga = 32</figcaption>
+            </div>
+            <div class="col-md-2 portfolio-item">
+                 <a href="img/ssd_river.jpg">
+                    <img class="img-responsive" src="img/lstack5.jpg" alt="">
+                </a>
+                <figcaption>sigma = 32</figcaption>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header"> V: Multiresolution Blending
+                </h2>
+                <p>The most common technique for blending two images together is alpha blending. Alpha blending is the process of combining an image with a background to create the appearance of partial or full transparency. Two images can be combined by using a black and white mask where one image will alpha blend with the black and the other will blend with the white, resulting with a final image that fades from one of the original images to the other. However, the optimal alpha blending window (the width of the feathering along the seams of the mask) is hard to achieve when blending two images together using all of the frequencies at once. This is because windows that are too small cause abrupt seams between the images because they don’t blend the lower frequencies enough, but windows that are too larger cause shadowing in the image where high frequencies begin to overlap in the final image. To fix these problems the two images are decomposed into Laplacian stacks to separate the different frequency layers. The mask image is decomposed into a Gaussian stack to increase the blending window at lower layers. Then, at each layer both images are alpha blended with the mask for that layer and added together. After this all of the alpha blended layers are summed to get the final result. For the resulting images I used Gaussian and Laplacian stacks 3 layers deep. For the mask's Gaussian stack I introduced another parameter "alpha" which I used to increase the size of the Gaussian filter at each level more then in the Gaussian stack I implemented earlier. This is because for some images I wanted the lower frequencies to have a very large window while for others I wanted a small one. In the earlier Gaussian stack the sigma values were calculated by:</p>
+                <code>sigma = 2**x</code>
+                <p>Where x is the current layer of the stack.</p>
+                <p>In the alpha Gaussian Stack, the sigma values were calculated by:</P>
+                <code>sigma = 2**(x*alpha)</code>
+                <p>For the fallowing blended image I used an alpha of 4 to make sure the background was well blended. I used an image of an onion and a pumpkin to blend together using a simple vertical mask.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 portfolio-item">
+                <a href="img/aleft.jpg">
+                    <img class="img-responsive" src="img/oni.jpg" alt="">
+                </a>
+                <figcaption>First Image</figcaption>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/aright.jpg">
+                    <img class="img-responsive" src="img/pump.jpg" alt="">
+                </a>
+                <figcaption>Second Image</figcaption>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/mix0.jpg">
+                    <img class="img-responsive" src="img/mask.jpg" alt="">
+                </a>
+                <figcaption>Mask</figcaption>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/mix0.jpg">
+                    <img class="img-responsive" src="img/onpum.jpg" alt="">
+                </a>
+                <figcaption>Blended</figcaption>
+            </div>
+        </div>
+        <p>Here are the different layers blended with the mask and then added together.</p>
+        <div class="row">
+            <div class="col-md-3 portfolio-item">
+                <a href="img/left0.jpg">
+                    <img class="img-responsive" src="img/left0.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/right0.jpg">
+                    <img class="img-responsive" src="img/right0.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/mix0.jpg">
+                    <img class="img-responsive" src="img/mix0.jpg" alt="">
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 portfolio-item">
+                <a href="img/left0.jpg">
+                    <img class="img-responsive" src="img/left1.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/right0.jpg">
+                    <img class="img-responsive" src="img/right1.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/mix0.jpg">
+                    <img class="img-responsive" src="img/mix1.jpg" alt="">
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 portfolio-item">
+                <a href="img/left0.jpg">
+                    <img class="img-responsive" src="img/left2.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/right0.jpg">
+                    <img class="img-responsive" src="img/right2.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/mix0.jpg">
+                    <img class="img-responsive" src="img/mix2.jpg" alt="">
+                </a>
+            </div>
+        </div>
+        <p>Here are the resulting images from summing all of the abover layers together.</p>
+        <div class="row">
+            <div class="col-md-3 portfolio-item">
+                <a href="img/aleft.jpg">
+                    <img class="img-responsive" src="img/aleft.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/aright.jpg">
+                    <img class="img-responsive" src="img/aright.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/mix0.jpg">
+                    <img class="img-responsive" src="img/onpum.jpg" alt="">
+                </a>
+            </div>
+        </div>
+        <p>Other blended images.</p>
+        <p> </p>
+        <p> </p>
+        <p> Tomato Lemon: alpha = 3</P>
+        <div class="row">
+            <div class="col-md-3 portfolio-item">
+                <a href="img/aleft.jpg">
+                    <img class="img-responsive" src="img/tom.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/aright.jpg">
+                    <img class="img-responsive" src="img/lem.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/mix0.jpg">
+                    <img class="img-responsive" src="img/mask.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/mix0.jpg">
+                    <img class="img-responsive" src="img/tomlem.jpg" alt="">
+                </a>
+            </div>
+        </div>
+        <p> Monnalise: alpha = 3</P>
+        <div class="row">
+            <div class="col-md-3 portfolio-item">
+                <a href="img/aleft.jpg">
+                    <img class="img-responsive" src="img/body.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/aright.jpg">
+                    <img class="img-responsive" src="img/mon2.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/mix0.jpg">
+                    <img class="img-responsive" src="img/mask5.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/mix0.jpg">
+                    <img class="img-responsive" src="img/monalise.jpg" alt="">
+                </a>
+            </div>
+        </div>
+        <p> Apple Mouth: alpha = 3</P>
+        <div class="row">
+            <div class="col-md-3 portfolio-item">
+                <a href="img/aleft.jpg">
+                    <img class="img-responsive" src="img/mouth.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/aright.jpg">
+                    <img class="img-responsive" src="img/ap.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/mix0.jpg">
+                    <img class="img-responsive" src="img/mask11.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/mix0.jpg">
+                    <img class="img-responsive" src="img/apm2.jpg" alt="">
+                </a>
+            </div>
+        </div>
+        <p> Cat Cake: alpha = 2</P>
+        <p>Trying to create a mix of keeping the cats outline for parts of the image but blending it into the cake for others proved difficult. Either the cat looks semi see through near the cake or it has a harsh black outline around the rest of its edges.</P>
+        <div class="row">
+            <div class="col-md-3 portfolio-item">
+                <a href="img/aleft.jpg">
+                    <img class="img-responsive" src="img/cato.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/aright.jpg">
+                    <img class="img-responsive" src="img/cake.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/mix0.jpg">
+                    <img class="img-responsive" src="img/mask9.jpg" alt="">
+                </a>
+            </div>
+            <div class="col-md-3 portfolio-item">
+                <a href="img/mix0.jpg">
+                    <img class="img-responsive" src="img/catcake.jpg" alt="">
+                </a>
+            </div>
+        </div>
+        <p> Avacado Sticking Its Tounge Out: alpha = 3</P>
+        <p>This images didn’t turn out as well as the others because the tongue image has a lighter background then the avocado so either there is a strange light area around the bottom of the tongue or the tongue begins to blend back into the avocado. But it still looks funny so I like it.</P>
+        <div class="row">
+            <div class="col-md-3 portfolio-item">
+                <a href="img/ovtun.jpg">
+                    <img class="img-responsive" src="img/ovtun.jpg" alt="">
+                </a>
+            </div>
+        </div>
+    <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header"> Coolest Thing Learned 
+                </h2>
+                <p> Learning how to decompose images into their different frequency layers to blend them more seamlessly with mutliresolution  blending was the coolest thing I learned in this assignment. I used to think alpha blending on its own was how images were blended together and it was how I implemented blending in photoshop before now. Finding out just how much blending the different frequencies together with different blending window sizes improves the final image over regular alpha blending was a shock to me. Also, after implementing the multiresolution blending algorithm, using it was really fun and created some really funny images.</p>
+                <br>
+                </br>
+                <br>
+                </br>
+
+            </div>
+    </div>
+       
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

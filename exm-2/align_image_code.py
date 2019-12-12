@@ -2,6 +2,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 import skimage.transform as sktr
+import skimage.io as skio
 
 def get_points(im1, im2):
     print('Please select 2 points in each image for alignment.')
@@ -83,7 +84,15 @@ def align_images(im1, im2):
 
 
 if __name__ == "__main__":
-    # 1. load the image
-    # 2. align the two images by calling align_images
-    # Now you are ready to write your own code for creating hybrid images!
+    # high sf
+    im1 = plt.imread('DerekPicture.jpg')/255.
+    # low sf
+    im2 = plt.imread('nutmeg.jpg')/255
+    im2 = im2[100:800,200:1000]
+    # Next align images (this code is provided, but may be improved)
+    im1_aligned, im2_aligned = align_images(im1, im2)
+    im1_aligned = im1_aligned * 255
+    im2_aligned = im2_aligned * 255
+    skio.imsave('im1_aligned.jpg', im1_aligned)
+    skio.imsave('im2_aligned.jpg', im2_aligned)
     pass
