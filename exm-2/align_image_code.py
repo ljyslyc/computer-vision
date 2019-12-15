@@ -88,9 +88,9 @@ if __name__ == "__main__":
     im1 = plt.imread('DerekPicture.jpg')/255.
     # low sf
     im2 = plt.imread('nutmeg.jpg')/255
-    im2 = im2[100:800,200:1000]
+    im2 = im2[0:900,150:1000]
     # Next align images (this code is provided, but may be improved)
-    im1_aligned, im2_aligned = align_images(im1, im2)
+    im1_aligned, im2_aligned = align_images(im2, im1)
     im1_aligned = im1_aligned * 255
     im2_aligned = im2_aligned * 255
     skio.imsave('im1_aligned.jpg', im1_aligned)

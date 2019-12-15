@@ -463,7 +463,6 @@ def shiftObjectNMask(targetYX, imSrc, srcMask, imTarg):
 
     return newImSrc, newSrcMask
 
-
 # findBorders([0, 2, 4, 5, 6, 7], 8)
 if __name__ == "__main__":
     main()
