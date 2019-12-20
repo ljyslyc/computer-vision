@@ -64,35 +64,25 @@ def match_img_size(im1, im2):
     h1, w1, c1 = im1.shape
     h2, w2, c2 = im2.shape
     if h1 < h2:
-        im2 = im2[int(np.floor((h2-h1)/2.)) : -int(np.ceil((h2-h1)/2.)), :, :]
+        im2 = im2[int(np.floor((h2-h1)/2.)) : int(-np.ceil((h2-h1)/2.)), :, :]
     elif h1 > h2:
-        im1 = im1[int(np.floor((h1-h2)/2.)) : -int(np.ceil((h1-h2)/2.)), :, :]
+        im1 = im1[int(np.floor((h1-h2)/2.)) : int(-np.ceil((h1-h2)/2.)), :, :]
     if w1 < w2:
-        im2 = im2[:, int(np.floor((w2-w1)/2.)) : -int(np.ceil((w2-w1)/2.)), :]
+        im2 = im2[:, int(np.floor((w2-w1)/2.)) : int(-np.ceil((w2-w1)/2.)), :]
     elif w1 > w2:
-        im1 = im1[:, int(np.floor((w1-w2)/2.)) : -int(np.ceil((w1-w2)/2.)), :]
+        im1 = im1[:, int(np.floor((w1-w2)/2.)) : int(-np.ceil((w1-w2)/2.)), :]
     assert im1.shape == im2.shape
     return im1, im2
 
 def align_images(im1, im2):
     pts = get_points(im1, im2)
+    print(pts)
+    return align_images_w_pts(im1, im2, pts)
+
+def align_images_w_pts(im1, im2, pts):
     im1, im2 = align_image_centers(im1, im2, pts)
     im1, im2 = rescale_images(im1, im2, pts)
     im1, angle = rotate_im1(im1, im2, pts)
     im1, im2 = match_img_size(im1, im2)
     return im1, im2
 
-
-if __name__ == "__main__":
-    # high sf
-    im1 = plt.imread('DerekPicture.jpg')/255.
-    # low sf
-    im2 = plt.imread('nutmeg.jpg')/255
-    im2 = im2[0:900,150:1000]
-    # Next align images (this code is provided, but may be improved)
-    im1_aligned, im2_aligned = align_images(im2, im1)
-    im1_aligned = im1_aligned * 255
-    im2_aligned = im2_aligned * 255
-    skio.imsave('im1_aligned.jpg', im1_aligned)
-    skio.imsave('im2_aligned.jpg', im2_aligned)
-    pass

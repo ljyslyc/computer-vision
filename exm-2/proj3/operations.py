@@ -133,8 +133,6 @@ def hybridImageOp(im1, im2, sigma1, sigma2, alignPts=None):
 
     return hybrid
 
-
-
 #### PYRAMID
 
 class PyramidMode(Enum):
@@ -176,8 +174,6 @@ def laplacianPyrOp_3D(im, levels, sigma, scaleB = False):
         gaussStack[i] = finalCurrLayer
 
     return gaussStack
-
-
 #### MULTI RES
 
 def scaler(LM):  # scales to 0 1

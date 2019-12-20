@@ -48,7 +48,7 @@
 
 \newpage
 
-\section*{实验一：彩色图像修复}
+\section*{\LARGE 实验一：彩色图像修复}
 
 \section{实验目标}
 利用图像处理技术，基于数字化存储的玻璃底板图像自动生成尽量非虚化的彩色图像。为完成本次实验，你需要从原始图像文件中分割提取三个彩色通道图像，将它们对齐并彼此叠加在一起，最终形成一张RGB彩色图像。
@@ -56,17 +56,42 @@
 美国国会图书馆在其网站上详细说明了他们对这批照片进行复原并创建彩色图像的过程，
 可以参考 http://www.loc.gov/exhibits/empire/making.html。
 
-\section{实验步骤}
+\section{设计思想及原理}
 
-\begin{enumerate}
-\item 了理解生产者与消费者问题模型，掌握解决问题的算法思想 
-\item 掌握正确使用同步机制的方法      
-\item 个生产者和消费者对有界缓冲区进行操作后,即时显示有界缓冲区的全部内容,当前指针位置和生产者/消费者线程的标识符.          
-\item 生产者和消费者各有两个以上.      
-\item 多个生产者或多个消费者之间须有共享对缓冲区进行操作的函数代码.。
+
+\subsection{算法步骤}
+\begin{enumerate}[itemindent=2em]  %在这里设置缩进的距离
+    \item 
 \end{enumerate}
 
+
+\newpage
+
+\section*{\LARGE 实验二：彩色图像修复}
+\section{实验目标}
+本次实验的目的是利用图像处理技术，分别利用低频与高频滤波器对图像进行处理，从而掌握卷积操作、高斯滤波器、图像合成等不同的基础处理方法。
+
 \section{设计思想及原理}
+
+
+\subsection{算法步骤}
+\begin{enumerate}[itemindent=2em]  %在这里设置缩进的距离
+    \item 
+\end{enumerate}
+
+\newpage
+
+\section*{\LARGE 实验三：图像融合}
+\section{实验目标}
+使用多分辨率融合技术无缝地融合两幅图像，图像通过轻微的变形和平滑的接缝将两个图像连接在一起。本次实验帮助学生掌握高斯金字塔、拉普拉斯金字塔以及多分辨率图像还原等技术处理过程。
+\section{设计思想及原理}
+
+
+\subsection{算法步骤}
+\begin{enumerate}[itemindent=2em]  %在这里设置缩进的距离
+    \item 
+\end{enumerate}
+
 
 \subsection{问题描述}
 
@@ -193,128 +218,8 @@ sudo apt-get install manpages-posix-dev
 % \newpage
 % % 代码附录
 \begin{appendices}
-\section{设计代码}
-\begin{lstlisting}[language=c++]
-   #include <stdio.h>
-   #include <stdlib.h>
-   #include <unistd.h>
-   #include <pthread.h>
-   #include <semaphore.h>
-   #include <string.h>
-    
-   #define CONSUMER_NUM 3
-   #define PRODUCER_NUM 3
-   #define MAXCAPACITY 10
-    
-   pthread_mutex_t mutex;
-   pthread_cond_t condCon;
-   pthread_cond_t condPro;
-   int g_count = 0;
-   int proIndex[PRODUCER_NUM];
-   int conIndex[CONSUMER_NUM];
-    
-   void *producer_function(void *args);
-   void *consumer_function(void *args);
-    
-   int main()
-   {
-       pthread_t producer_thread[PRODUCER_NUM];
-       pthread_t consumer_thread[CONSUMER_NUM];
-       int res;
-       int i;
-       void *thread_result;
-    
-       pthread_mutex_init(&mutex,NULL);
-       pthread_cond_init(&condCon,NULL);
-       pthread_cond_init(&condPro,NULL);
-    
-       for(i = 0;i < PRODUCER_NUM; ++ i)
-       {
-           proIndex[i] = i + 1;
-           res = pthread_create(&producer_thread[i], NULL, producer_function, (void*)&proIndex[i]);
-           if(res != 0)
-           {
-               perror("create thread producer error");
-               exit(EXIT_FAILURE);
-           }
-           printf("Starting producer %d success!\n", i);
-       }
-    
-       for(i = 0; i < CONSUMER_NUM; ++ i)
-       {
-           conIndex[i] = i + 1;
-           res = pthread_create(&consumer_thread[i], NULL, consumer_function, (void*)&conIndex[i]);
-           if(res != 0)
-           {
-               perror("create thread producer error");
-               exit(EXIT_FAILURE);
-           }
-           printf("Starting consumer %d success!\n",i);
-       }
-    
-       for(i = 0; i < PRODUCER_NUM; ++i)
-       {
-           res = pthread_join(producer_thread[i],&thread_result);
-           if(res != 0)
-           {
-               perror("thread producer failed");
-               exit(EXIT_FAILURE);
-           }
-           printf("thread producer %d joined\n", i);
-       }
-    
-       for(i = 0; i < PRODUCER_NUM; ++i)
-       {
-           res = pthread_join(consumer_thread[i],&thread_result);
-           if(res != 0)
-           {
-               perror("thread consumer failed");
-               exit(EXIT_FAILURE);
-           }
-           printf("thread consumer %d joined\n",i);
-       }
-    
-       pthread_mutex_destroy(&mutex);
-       pthread_cond_destroy(&condCon);
-       pthread_cond_destroy(&condPro);
-    
-       return 0;
-   }
-    
-   void *producer_function(void *args)
-   {
-       int index = *(int*)args;
-       while(1){
-           pthread_mutex_lock(&mutex);
-           while(g_count >= MAXCAPACITY){
-               printf("产品已满，生产者%d等待中\n", index);
-               pthread_cond_wait(&condCon, &mutex);
-           }
-    
-           ++g_count;
-           printf("生产者%d生产了1个产品，现在共有%d个产品\n", index, g_count);
-           pthread_cond_signal(&condPro);
-           pthread_mutex_unlock(&mutex);
-       }
-       pthread_exit(NULL);
-   }
-    
-   void *consumer_function(void *args)
-   {
-       int index = *(int*)args;
-       while(1){
-           pthread_mutex_lock(&mutex);
-           while(g_count == 0){
-               printf("缓冲区里没有产品了，消费者%d等待中\n", index);
-               pthread_cond_wait(&condPro, &mutex);
-           }
-           --g_count;
-           printf("消费者%d消费1个产品，缓冲区现有%d个产品\n", index, g_count);
-           pthread_cond_signal(&condCon);
-           pthread_mutex_unlock(&mutex);
-       }
-       pthread_exit(NULL);
-   }
+\section{实验一：彩色图像修复}
+\begin{lstlisting}[language=python]
    
 \end{lstlisting}
 \end{appendices}

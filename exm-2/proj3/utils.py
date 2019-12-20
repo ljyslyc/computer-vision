@@ -11,7 +11,7 @@ fOutputDirectory = "output_imgs"
 fFormat = ".jpg"
 
 #IMAGE IO
-TESTING_DIR = "trash_imgs"
+TESTING_DIR = "docs"
 
 def timeStampPath(path):
     currTime = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
@@ -21,19 +21,15 @@ def timeStampPath(path):
 
 def printImage(directory, name, im, disp=False):
     # save the image
-
     finalPath = directory + "/"+ timeStampPath(name)
     imsave(finalPath, im)
-
     print("File saved to:", finalPath)
-
     # display the image
     if disp:
         viewImage(im)
 
 def testImage(path, im, disp=True):
     finalPath = path
-
     printImage(TESTING_DIR, finalPath, im, disp)
 
 def viewImage(im):
@@ -52,7 +48,6 @@ def readImageNName(impath1):
 
     return im1, imname1
 
-
 def grayFourier(gray_image):
     result = np.log(np.abs(np.fft.fftshift(np.fft.fft2(gray_image))))
     # resultClipped = np.clip(result, -1, 1)
@@ -60,7 +55,6 @@ def grayFourier(gray_image):
 
 def cFourier(gray_image):
     result = np.log(np.abs(np.fft.fftshift(np.fft.fft2(gray_image))))
-
 
     # resultClipped = np.clip(result, -1, 1)
     return result #resultClipped
