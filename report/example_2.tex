@@ -1,0 +1,113 @@
+\documentclass[withoutpreface,bwprint]{cumcmthesis} %去掉封面与编号页
+\usepackage[final]{pdfpages}
+\title{《软件需求工程 B》 大作业课题}
+\tihao{A}
+
+\baominghao{4321}
+\schoolname{武汉理工大学}
+\membera{小米}
+\memberb{向左}
+\memberc{哈哈}
+\supervisor{老师}
+\yearinput{2017}
+\monthinput{08}
+\dayinput{22}
+
+% 添加pdf封面
+% \usepackage[final]{pdfpages}
+% \includepdf[pages={1,2}]{head.pdf}
+% \newpage
+
+
+% \begin{enumerate}[itemindent=1em]  %在这里设置缩进的距离
+%     \item 将信号量S的值减1，即进行S = S-1；   
+% \end{enumerate}
+
+% \newpage
+% % 代码附录
+% \begin{appendices}
+% \section{爬取店铺POI}
+% \begin{lstlisting}[language=python]
+%  \end{lstlisting}
+% \section{评论数据爬取}
+% \begin{lstlisting}[language=python]
+% \end{lstlisting}
+% \end{appendices}
+
+\begin{document}
+\includepdf{exp_head.pdf}
+\newpage
+% \maketitle
+%  \begin{abstract}
+ 
+% \keywords{\TeX{}\quad  图片\quad   表格\quad  公式}
+% \end{abstract}
+% \includepdf[pages={1,2}]{head.pdf} 
+% \newpage
+% 目录
+% \tableofcontents
+
+\section*{\LARGE 实验一：混合图像}
+
+\section{实验背景}
+
+本次实验的目标是使用Oliva、Torralba和Schyns在SIGGRAPH 2006论文中描述的方法创建混合图像。混合图像是一种合成的静态图像，观众对其内容的理解随视距的变化而变化。混合图像的基本想法是，当距离图像较近时，图像中的高频信号更容易被观众所感知，但距离图像较远时，观众更容易感知到图像中的低频(平滑)部分。通过将一幅图像的高频部分与另一幅图像的低频部分混合，你就可以得到一幅混合图像，在不同的距离上会得到不同的内容解释。
+\section{实验目标}
+本次实验的目的是利用图像处理技术，分别利用低频与高频滤波器对图像进行处理，从而掌握卷积操作、高斯滤波器、图像合成等不同的基础处理方法。
+
+\section{问题分析及设计思路}
+
+
+\section{解决方案及结果分析}
+
+\section{优化方案及对比}
+
+
+\section{实验改进与展望}
+
+
+\newpage
+
+\section*{\LARGE 实验二：图像融合}
+
+\section{实验背景}
+\section{实验目标}
+使用多分辨率融合技术无缝地融合两幅图像，图像通过轻微的变形和平滑的接缝将两个图像连接在一起。本次实验帮助学生掌握高斯金字塔、拉普拉斯金字塔以及多分辨率图像还原等技术处理过程。
+\section{设计思想及原理}
+
+\section{问题分析及设计思路}
+
+
+\section{解决方案及结果分析}
+
+\section{优化方案及对比}
+
+
+\section{实验改进与展望}
+
+
+
+\section{课程总结}
+本次实验学习了设计到在linux系统上多个c++文件的编译，因此学习了如何
+
+% \newpage
+% % 代码附录
+\begin{appendices}
+\section{实验二：彩色图像修复}
+\begin{lstlisting}[language=python]
+   
+\end{lstlisting}
+\end{appendices}
+%参考文献
+\begin{thebibliography}{9}%宽度9
+    \bibitem[1]{1}
+    李洁, 张瑜慧. 信号量在生产者-消费者及其变形问题中的应用[J]. 福建电脑, 2012(02):175-177.
+    \bibitem[2]{2}
+    李志民, 赵一丁, 底恒. 操作系统进程同步的教学实践[C]// 计算机研究新进展（2010）——河南省计算机学会2010年学术年会论文集. 2010.步的教学实践[C]计算机研究新进展（2010）——河南省计算机学会2010年学术年会论文集. 2010.
+    \bibitem[3]{3}
+    陈涛,任海兰. 基于Linux的多线程池并发Web服务器设计[J]. 电子设计工程, 2015(11):175-177.
+    \bibitem[4]{4}
+    李盼盼, 赵浩. 基于信号量机制的生产者消费者问题的分析[J]. 无线互联科技, 2013(11):101-102.
+\end{thebibliography}
+
+\end{document}
